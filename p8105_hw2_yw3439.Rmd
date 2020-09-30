@@ -1,0 +1,65 @@
+---
+title: "p8105_hw2_yw3439"
+author: "Qetsiyah Wang"
+date: "9/30/2020"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(dplyr)
+library(readxl)
+```
+
+
+## Problem 1. Tidy Mr. Trash Wheel
+
+```{r}
+
+trash_wheel = read_excel("Trash-Wheel-Collection-Totals-8-6-19.xlsx", sheet = "Mr. Trash Wheel", skip = 1,
+                   cell_cols("A:N")) %>%
+  janitor::clean_names() %>%
+  drop_na(dumpster) %>%
+  mutate(
+    sports_balls = as.integer(round(sports_balls))
+  )
+
+```
+
+## Tidy Precipitation Data
+
+```{r}
+
+precip_2017 = read_excel("Trash-Wheel-Collection-Totals-8-6-19.xlsx", sheet = "2017 Precipitation", skip = 1) %>%
+  janitor::clean_names() %>%
+  drop_na(month) %>%
+  mutate(
+    year =rep("2017", 12),
+    month = factor(month, labels = month.name)
+  )
+
+precip_2018 = read_excel("Trash-Wheel-Collection-Totals-8-6-19.xlsx", sheet = "2018 Precipitation", skip = 1) %>%
+  janitor::clean_names() %>%
+  drop_na(month) %>%
+  mutate(
+    year =rep("2018", 12),
+    month = factor(month, labels = month.name)
+  )
+
+precip = full_join(precip_2017, precip_2018) %>%
+  mutate(
+    month = as.character(month)
+  )
+
+```
+   
+   Mr.Trash Wheel data mainly discusses about
+   
+
+
+
+
+
+
