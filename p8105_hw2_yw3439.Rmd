@@ -54,14 +54,18 @@ precip = full_join(precip_2017, precip_2018) %>%
   ) %>%
   rename("precipitation_inch" = "total")
 
+balls_2017 = trash_wheel %>%
+  filter(year == "2017") %>%
+  select(sports_balls)
+
 ```
    
    Mr.Trash Wheel dataset mainly discusses about the content within every dumpster recorded from `r min(pull(trash_wheel, year))` to `r max(pull(trash_wheel, year))`, a total of 344 records of dumpster. The dataset focuses on measurements on certain variables, `r colnames(trash_wheel[5:14])`. Among these types of trashes, the most one is `r colnames(trash_wheel[9])` showing the mean of `r mean(pull(trash_wheel, cigarette_butts))`. The least one is `r colnames(trash_wheel[14])` with the mean of `r mean(pull(trash_wheel, sports_balls))`. 
    
    Two precipitation datasets record precipitation data for each month in 2017 and 2018, shown as below. 
    `r knitr::kable(precip)`
-   2018 showed the total of precipitation of `r sum(precip_2018, total)`.
-   Combining observations for both the trash wheel dataset and the precipitation dataset, as the precipitation went up with increment of `r pull(precip_2018, total)[2]-pull(precip_2018, total)[1]` from January to February, amounts of dumped grocery bags, chip bags and sports balls also increased significantly. Inferred trend about the positive correlation between sports ball and precipitation can also be noticed in 2017. As the amount of precipitation went continually down starting from July of `r pull(precip_2017, total)[7]` to December of `r pull(precip_2017, total)[12]`, the amount of sports ball showed decreased trend. The median number of sports ball in a dumpster in 2017 is `r filter(trash_wheel,year=="2017")%>%median(pull(trash_wheel,sports_balls))`.
+   2018 showed the total of precipitation of `r sum(pull(precip_2018, total))`.
+   Combining observations for both the trash wheel dataset and the precipitation dataset, as the precipitation went up with increment of `r pull(precip_2018, total)[2]-pull(precip_2018, total)[1]` from January to February, amounts of dumped grocery bags, chip bags and sports balls also increased significantly. Inferred trend about the positive correlation between sports ball and precipitation can also be noticed in 2017. As the amount of precipitation went continually down starting from July of `r pull(precip_2017, total)[7]` to December of `r pull(precip_2017, total)[12]`, the amount of sports ball showed decreased trend. The median number of sports ball in a dumpster in 2017 is `r median(pull(balls_2017, sports_balls))`.
    
 
 ## Problem.2 NYC Transit Data
@@ -98,10 +102,11 @@ reform_subway = subway %>%
   )
 
 a_train = reform_subway %>%
-  filter(route_name == "A")
+  filter(route_name == "A") %>%
+  distinct(station_name, ada)
 
 ```
-  There are `r nrow(distinct(a_train, station_name)` distinct stations serve the A train. Of these stations, there are `r nrow(filter(a_train, ada=="TRUE"))` ADA compliant.
+  There are `r nrow(a_train)` distinct stations serve the A train. Of these stations, there are `r nrow(filter(a_train, ada=="TRUE"))` ADA compliant.
 
 
 ## Problem 3
