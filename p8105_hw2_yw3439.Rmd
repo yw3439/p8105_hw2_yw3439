@@ -64,10 +64,53 @@ precip = full_join(precip_2017, precip_2018) %>%
    Combining observations for both the trash wheel dataset and the precipitation dataset, as the precipitation went up with increment of `r pull(precip_2018, total)[2]-pull(precip_2018, total)[1]` from January to February, amounts of dumped grocery bags, chip bags and sports balls also increased significantly. Inferred trend about the positive correlation between sports ball and precipitation can also be noticed in 2017. As the amount of precipitation went continually down starting from July of `r pull(precip_2017, total)[7]` to December of `r pull(precip_2017, total)[12]`, the amount of sports ball showed decreased trend. The median number of sports ball in a dumpster in 2017 is `r filter(trash_wheel,year=="2017")%>%median(pull(trash_wheel,sports_balls))`.
    
 
+## Problem.2 NYC Transit Data
+
+```{r, message=FALSE}
+
+subway = read_csv("NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>%
+  janitor::clean_names() %>%
+  select(line, station_name, station_latitude, station_longitude, entry, vending, 
+         entrance_type, ada, starts_with("route")) %>%
+  mutate(
+    entry = recode(entry,"YES" = "TRUE"),
+    entry = recode(entry, "NO" = "FALSE")
+  )
+```
+  The dataset NYC Transit Data mainly discusses about each subway stations in NYC. Data about the accurate address of the station is shown in `r colnames(subway)[1:4]`. `r colnames(subway)[5:8]` dispalys the entry information for that station. The rest variables with prefix of route show different subway route services that each station provides with. Generally, the dataset, after tidy, contains `r ncol(subway)` columns and `r nrow(subway)` rows, which is considered as not completely tidied because there are too many missing values in variables with prefix of routes. Further steps may need to make the whole dataset more clean.
+
+  There are `r nrow(distinct(subway, station_name))` stations in NYC.`r nrow(filter(subway, ada=="TRUE"))` stations are ADA compliant. Among all stations, the proportion of station entrances/exits without vending is `r nrow(filter(subway, vending=="NO"))/nrow(subway)`.
+  
+```{r}
+
+reform_subway = subway %>%
+  select(station_name, ada, starts_with("route")) %>%
+  mutate(
+    route8 = as.character(route8),
+    route9 = as.character(route9),
+    route10 = as.character(route10),
+    route11 = as.character(route11)
+  ) %>%
+  pivot_longer(
+    route1:route11,
+    names_to = "route_number",
+    values_to = "route_name"
+  )
+
+a_train = reform_subway %>%
+  filter(route_name == "A")
+
+```
+  There are `r nrow(distinct(a_train, station_name)` distinct stations serve the A train. Of these stations, there are `r nrow(filter(a_train, ada=="TRUE"))` ADA compliant.
+
+
+## Problem 3
+
+```{r}
 
 
 
-
+```
 
 
 
