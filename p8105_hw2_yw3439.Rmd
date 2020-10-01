@@ -64,7 +64,7 @@ balls_2017 = trash_wheel %>%
    
    Two precipitation datasets record precipitation data for each month in 2017 and 2018, shown as below. 
    `r knitr::kable(precip)`
-   2018 showed the total of precipitation of `r sum(pull(precip_2018, total))`.
+   2018 showed the total of precipitation of `r sum(pull(precip_2018, total))` inches.
    Combining observations for both the trash wheel dataset and the precipitation dataset, as the precipitation went up with increment of `r pull(precip_2018, total)[2]-pull(precip_2018, total)[1]` from January to February, amounts of dumped grocery bags, chip bags and sports balls also increased significantly. Inferred trend about the positive correlation between sports ball and precipitation can also be noticed in 2017. As the amount of precipitation went continually down starting from July of `r pull(precip_2017, total)[7]` to December of `r pull(precip_2017, total)[12]`, the amount of sports ball showed decreased trend. The median number of sports ball in a dumpster in 2017 is `r median(pull(balls_2017, sports_balls))`.
    
 
