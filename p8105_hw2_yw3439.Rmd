@@ -146,9 +146,15 @@ unemploy = read.csv("fivethirtyeight_datasets/unemployment.csv") %>%
     year = as.character(year))
 
 pol_snp = full_join(pols_month, snp)
-fivethirtyeight = full_join(pol_snp, unemploy)
+fivethirtyeight = full_join(pol_snp, unemploy) %>%
+  mutate(
+    year = as.numeric(year)
+  )
 
 ```
+  The Fivethirtyeight dataset, containing `r ncol(fivethirtyeight)` variables and `r nrow(fivethirtyeight)` observations, mainly discusses about the status of unemployment and financial market during the period of `r range(pull(fivethirtyeight, year))`, ranging from `r min(pull(fivethirtyeight, year))` to `r max(pull(fivethirtyeight, year))` under governing interchangeably by Republican and Democratic. The dataset shows amounts of senates and representatives for two governments for each year. Unemployment statistics is analyzed in terms of percentage of unemployment in each month for every year. 
+  
+  Financial market status is shown with the closing values of the S&P stock index for each month within each year. There is no recorded observations for stock index before `r min(pull(snp, year))`. The overall trend for closing values of stock index is increasing from `r min(pull(fivethirtyeight, close), na.rm = TRUE)` to `r max(pull(fivethirtyeight, close))`, meaning that economy in United States is developing with the pretty significant enhancement. Unemployment percentage shows no big leap from `r min(pull(fivethirtyeight, year), na.rm = TRUE)` to `r max(pull(fivethirtyeight, year), na.rm = TRUE)`, with a mean of `r mean(pull(fivethirtyeight, unemployment), na.rm = TRUE)` and a median of   `r mean(pull(fivethirtyeight, unemployment), na.rm = TRUE)`. The lowest unemployment percentage is `r min(pull(unemploy, unemployment))` in `r min(pull(unemploy, year))`. 
   
 
 
