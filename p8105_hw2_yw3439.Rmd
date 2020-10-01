@@ -130,6 +130,7 @@ snp = read.csv("fivethirtyeight_datasets/snp.csv") %>%
   separate(date, c("month", "day", "year")) %>%
   select(year, month, -day, close) %>%
   mutate(
+    month = as.factor(month),
     month = factor(month, labels = month.name))
 
 unemploy = read.csv("fivethirtyeight_datasets/unemployment.csv") %>%
