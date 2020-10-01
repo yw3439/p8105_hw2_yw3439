@@ -113,8 +113,20 @@ a_train = reform_subway %>%
 
 ```{r}
 
+pols_month = read.csv("fivethirtyeight_datasets/pols-month.csv") %>%
+  janitor::clean_names() %>%
+  separate(mon, c("year", "month", "day")) %>%
+  select(-day) %>%
+  mutate(
+    month = factor(month, labels = month.name),
+    prez_gop = replace(prez_gop, prez_gop == 2, 1),
+    prez_gop = ifelse(prez_gop == 0, "democratic", "republician")
+  ) %>%
+  select(-prez_dem) %>%
+  rename("president" = "prez_gop")
 
 
+  
 ```
 
 
